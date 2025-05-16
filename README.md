@@ -2,6 +2,8 @@
 
 This is a **Vue 3** front-end coding exercise built using **Vite**. It was developed as part of a technical assessment for **Neembly**, a project by **Two Miss Pink Place Inc.**
 
+🟢 **Live Demo**: [https://rivera-neembly-exercise.netlify.app/](https://rivera-neembly-exercise.netlify.app/)
+
 The application features a simple product management interface that allows you to view, search, paginate, add, edit, and delete products using the Fake Store API. It includes fully interactive UI components, dynamic form handling, and smooth stateful interactions.
 
 ---
