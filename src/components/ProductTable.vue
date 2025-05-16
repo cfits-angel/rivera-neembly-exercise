@@ -1,5 +1,5 @@
 <template>
-  <VCard class="mb-6" title="Products List">
+  <VCard class="mb-6" title="Product List">
     <VCardText>
       <div class="d-flex justify-space-between flex-wrap gap-4">
         <div class="d-flex gap-4 align-center">
