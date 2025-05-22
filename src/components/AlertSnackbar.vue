@@ -1,13 +1,14 @@
 <template>
   <!-- Snackbar component to show alert messages -->
+   <!-- Controls visibility -->
   <VSnackbar
-    :model-value="modelValue" <!-- Controls visibility -->
-    @update:model-value="$emit('update:modelValue', $event)" <!-- Sync visibility with parent -->
-    :color="color" <!-- Sets background color (success, error, etc.) -->
-    timeout="3500" <!-- Auto-hide after 3.5 seconds -->
-    location="top right" <!-- Position on screen -->
-    elevation="5" <!-- Shadow depth -->
-    shaped <!-- Gives snackbar rounded corners -->
+    :model-value="modelValue"
+    @update:model-value="$emit('update:modelValue', $event)" 
+    :color="color"
+    timeout="3500"
+    location="top right"
+    elevation="5"
+    shaped
   >
     <!-- Icon on the left of the message -->
     <VIcon left>{{ icon }}</VIcon>
