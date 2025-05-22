@@ -1,7 +1,9 @@
 <template>
   <VCard class="mb-6" title="Product List">
     <VCardText>
+      <!-- Top bar with search input and action buttons -->
       <div class="d-flex justify-space-between flex-wrap gap-4">
+        <!-- Search field -->
         <div class="d-flex gap-4 align-center">
           <div style="width: 350px;">
             <AppTextField
@@ -15,12 +17,15 @@
           </div>
         </div>
 
+        <!-- Buttons: Add New and Columns toggle menu -->
         <div class="d-flex align-center flex-wrap gap-4">
+          <!-- Add New product button -->
           <VBtn prepend-icon="tabler-plus" @click="$emit('add-new')">
             Add New
             <VTooltip activator="parent" location="top">Create new product</VTooltip>
           </VBtn>
 
+          <!-- Columns toggle menu -->
           <div>
             <VMenu v-model="toggleColumnsMenu" transition="scale-transition" max-width="200" offset-y>
               <template #activator="{ props }">
@@ -54,9 +59,11 @@
 
     <VDivider />
 
+    <!-- Table -->
     <VTable fixed-header>
       <thead>
         <tr>
+          <!-- Conditionally render headers based on visibility -->
           <th v-if="isColumnVisible('product')" class="text-uppercase">Product</th>
           <th v-if="isColumnVisible('price')" class="text-uppercase">Price</th>
           <th v-if="isColumnVisible('description')" class="text-uppercase">Description</th>
@@ -67,6 +74,7 @@
       </thead>
 
       <tbody>
+        <!-- Display paged data -->
         <tr v-for="item in pagedData" :key="item.id">
           <td v-if="isColumnVisible('product')">
             <div class="d-flex pt-3">
@@ -83,6 +91,7 @@
           <td v-if="isColumnVisible('category')" class="text-no-wrap">{{ item?.category }}</td>
           <td v-if="isColumnVisible('rating')">{{ item?.rating?.rate || '-' }}</td>
           <td v-if="isColumnVisible('actions')" class="text-no-wrap">
+            <!-- Action buttons: View, Edit, Delete -->
             <VBtn
               variant="tonal"
               color="primary"
@@ -122,6 +131,7 @@
         </tr>
       </tbody>
 
+      <!-- Pagination and summary -->
       <template v-if="filteredData.length !== 0" #bottom>
         <VDivider />
         <div
@@ -141,10 +151,12 @@
       </template>
     </VTable>
 
+    <!-- Loading spinner -->
     <div class="text-center mt-5 mb-5">
       <VProgressCircular v-if="fetchingData" indeterminate color="primary" />
     </div>
 
+    <!-- No data message -->
     <div v-if="filteredData.length === 0 && !fetchingData" class="text-center">
       <br /><br />
       <p class="text-subtitle-1 font-weight-semibold">No Data Available</p>
@@ -154,8 +166,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
-import { defineProps, defineEmits } from "vue";
+import { computed, ref, watch } from "vue";
 
 const props = defineProps({
   rawData: {
@@ -164,17 +175,14 @@ const props = defineProps({
   },
   searchData: {
     type: String,
-    required: false,
     default: "",
   },
   currentPage: {
     type: Number,
-    required: false,
     default: 1,
   },
   pageSize: {
     type: Number,
-    required: false,
     default: 5,
   },
   fetchingData: Boolean,
@@ -195,6 +203,7 @@ const emit = defineEmits([
 
 const toggleColumnsMenu = ref(false);
 
+// Keep local reactive copy of columns for toggling visibility
 const cols = ref(props.columns);
 
 watch(
@@ -204,11 +213,13 @@ watch(
   }
 );
 
+// Returns whether the column is visible based on columns prop
 const isColumnVisible = (key) => {
   const col = props.columns.find((c) => c.key === key);
   return col ? col.visible : true;
 };
 
+// Filter data based on search input in title, description, or category
 const filteredData = computed(() => {
   if (!props.searchData) return props.rawData;
 
@@ -222,23 +233,29 @@ const filteredData = computed(() => {
   });
 });
 
+// Calculate total pages for pagination
 const totalPages = computed(() =>
   Math.ceil(filteredData.value.length / props.pageSize)
 );
 
+// Get current page data slice
 const pagedData = computed(() => {
   const start = (props.currentPage - 1) * props.pageSize;
   return filteredData.value.slice(start, start + props.pageSize);
 });
 
+// Calculate starting entry number of current page
 const startEntry = computed(() => {
   if (filteredData.value.length === 0) return 0;
   return (props.currentPage - 1) * props.pageSize + 1;
 });
+
+// Calculate ending entry number of current page
 const endEntry = computed(() => {
   return Math.min(props.currentPage * props.pageSize, filteredData.value.length);
 });
 
+// Toggle column visibility on checkbox click
 const toggleColumn = (key) => {
   const col = props.columns.find((c) => c.key === key);
   if (col) {

@@ -1,9 +1,15 @@
 <template>
-  <VDialog width="600" :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)">
+  <VDialog
+    width="600"
+    :model-value="modelValue"
+    @update:model-value="$emit('update:modelValue', $event)"
+  >
+    <!-- Close button component, emits event to close dialog -->
     <DialogCloseBtn @click="$emit('update:modelValue', false)" />
 
     <VCard>
       <VCardTitle class="text-h5">{{ product?.title }}</VCardTitle>
+
       <VCardText>
         <VImg :src="product?.image" width="150" class="pb-5" />
 
@@ -18,8 +24,8 @@
 
 <script setup>
 const props = defineProps({
-  modelValue: Boolean,
-  product: Object,
+  modelValue: Boolean,  // Controls visibility of dialog
+  product: Object,      // The product details to show
 });
 
 const emits = defineEmits(["update:modelValue", "close"]);
